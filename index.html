@@ -1278,18 +1278,20 @@
 
 </script>
 
-<script type="module">
-  // Moonbase embedded storefront — https://moonbase.sh/docs/storefronts/embedded/
-  import Moonbase from 'https://esm.sh/@moonbase.sh/storefront';
-  await Moonbase.setup('https://demo.moonbase.sh', {
-    toolbar: { enabled: false },
-    theme: {
-      dark: true,
-      colors: { primary: '#eca45d' },
-      corners: 'sharp',
-      buttons: 'light',
-      fonts: { heading: 'Montserrat', body: 'Inter' },
-    },
+<!-- Moonbase embedded storefront — https://moonbase.sh/docs/storefronts/embedded/ -->
+<script type="module" src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    Moonbase.setup('https://demo.moonbase.sh', {
+      toolbar: { enabled: false },
+      theme: {
+        dark: true,
+        colors: { primary: '#eca45d' },
+        corners: 'sharp',
+        buttons: 'light',
+        fonts: { heading: 'Montserrat', body: 'Inter' },
+      },
+    });
   });
 </script>
 
