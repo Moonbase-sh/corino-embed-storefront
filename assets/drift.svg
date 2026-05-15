@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1019"/>
+      <stop offset="100%" stop-color="#06070c"/>
+    </linearGradient>
+    <radialGradient id="washA" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#4d3e9f" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#4d3e9f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washB" cx="72%" cy="72%" r="55%">
+      <stop offset="0%" stop-color="#2d7193" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#2d7193" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbA" cx="35%" cy="30%" r="70%">
+      <stop offset="0%"  stop-color="#cfe0e8"/>
+      <stop offset="40%" stop-color="#5d83bc"/>
+      <stop offset="80%" stop-color="#2a266a"/>
+      <stop offset="100%" stop-color="#0c0d18" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbB" cx="40%" cy="35%" r="70%">
+      <stop offset="0%"  stop-color="#a8d7e2"/>
+      <stop offset="50%" stop-color="#3f6cb5"/>
+      <stop offset="100%" stop-color="#0c0d18" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbC" cx="40%" cy="35%" r="70%">
+      <stop offset="0%"  stop-color="#c5dedf"/>
+      <stop offset="60%" stop-color="#4d87b1"/>
+      <stop offset="100%" stop-color="#0c0d18" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#79a9d5" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#79a9d5" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#79a9d5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base + washes -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#washA)"/>
+  <rect width="512" height="512" fill="url(#washB)"/>
+
+  <!-- Horizontal sweep lines -->
+  <rect x="25" y="100" width="462" height="1" fill="url(#sweep)" opacity="0.5"/>
+  <rect x="25" y="180" width="462" height="1" fill="url(#sweep)" opacity="0.75"/>
+  <rect x="25" y="256" width="462" height="1" fill="url(#sweep)" opacity="0.5"/>
+  <rect x="25" y="332" width="462" height="1" fill="url(#sweep)" opacity="0.75"/>
+  <rect x="25" y="412" width="462" height="1" fill="url(#sweep)" opacity="0.5"/>
+
+  <!-- Orbs (largest first) -->
+  <circle cx="190" cy="210" r="97" fill="url(#orbA)" opacity="0.9"/>
+  <circle cx="370" cy="370" r="72" fill="url(#orbB)" opacity="0.78"/>
+  <circle cx="290" cy="295" r="52" fill="url(#orbC)" opacity="0.7"/>
+
+  <!-- Particles (deterministic placement) -->
+  <g fill="#d6efff">
+    <circle cx="92"  cy="138" r="2.5" opacity="0.85"/>
+    <circle cx="138" cy="92"  r="2"   opacity="0.75"/>
+    <circle cx="180" cy="345" r="3"   opacity="0.9"/>
+    <circle cx="240" cy="120" r="2"   opacity="0.7"/>
+    <circle cx="312" cy="155" r="2.5" opacity="0.85"/>
+    <circle cx="408" cy="200" r="2"   opacity="0.75"/>
+    <circle cx="438" cy="270" r="2.5" opacity="0.85"/>
+    <circle cx="118" cy="282" r="2.5" opacity="0.75"/>
+    <circle cx="78"  cy="365" r="3"   opacity="0.9"/>
+    <circle cx="155" cy="440" r="2"   opacity="0.7"/>
+    <circle cx="225" cy="395" r="2.5" opacity="0.85"/>
+    <circle cx="345" cy="135" r="2"   opacity="0.7"/>
+    <circle cx="408" cy="430" r="2.5" opacity="0.85"/>
+    <circle cx="465" cy="350" r="2"   opacity="0.75"/>
+    <circle cx="280" cy="445" r="2.5" opacity="0.8"/>
+    <circle cx="60"  cy="220" r="2"   opacity="0.7"/>
+  </g>
+
+  <!-- Waveform at bottom -->
+  <path d="M 40,470 L 56,468 L 72,472 L 88,465 L 104,475 L 120,463 L 136,476 L 152,462 L 168,478 L 184,464 L 200,472 L 216,468 L 232,474 L 248,466 L 264,476 L 280,464 L 296,472 L 312,466 L 328,474 L 344,468 L 360,474 L 376,466 L 392,476 L 408,464 L 424,472 L 440,468 L 456,474 L 472,470"
+        stroke="#80c2df" stroke-width="1.4" fill="none" stroke-opacity="0.7"/>
+</svg>

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#1a130c"/>
+      <stop offset="50%" stop-color="#0a0808"/>
+      <stop offset="100%" stop-color="#0a0c14"/>
+    </linearGradient>
+    <radialGradient id="warmWash" cx="28%" cy="60%" r="48%">
+      <stop offset="0%"  stop-color="#c76b2c" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#c76b2c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="coolWash" cx="74%" cy="40%" r="48%">
+      <stop offset="0%"  stop-color="#3f6cb5" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#3f6cb5" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- HALO sun -->
+    <radialGradient id="sun" cx="42%" cy="36%" r="65%">
+      <stop offset="0%"  stop-color="#fae0a8"/>
+      <stop offset="35%" stop-color="#f0a755"/>
+      <stop offset="70%" stop-color="#bf551d"/>
+      <stop offset="100%" stop-color="#4a1f0d"/>
+    </radialGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#e89548" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#e89548" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- DRIFT orb -->
+    <radialGradient id="orb" cx="38%" cy="32%" r="70%">
+      <stop offset="0%"  stop-color="#d6efff"/>
+      <stop offset="40%" stop-color="#5d83bc"/>
+      <stop offset="80%" stop-color="#2a266a"/>
+      <stop offset="100%" stop-color="#0c0d18" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#6f9bd9" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6f9bd9" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Horizon: amber → cyan -->
+    <linearGradient id="horizon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#eca45d" stop-opacity="0"/>
+      <stop offset="22%"  stop-color="#eca45d" stop-opacity="0.55"/>
+      <stop offset="50%"  stop-color="#a795a0" stop-opacity="0.55"/>
+      <stop offset="78%"  stop-color="#79a9d5" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#79a9d5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base + warm/cool washes -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#warmWash)"/>
+  <rect width="512" height="512" fill="url(#coolWash)"/>
+
+  <!-- HALO concentric rings (left half), faint -->
+  <g fill="none" stroke-width="1.5">
+    <circle cx="180" cy="296" r="92"  stroke="#eca45d" stroke-opacity="0.18"/>
+    <circle cx="180" cy="296" r="130" stroke="#eca45d" stroke-opacity="0.13"/>
+    <circle cx="180" cy="296" r="172" stroke="#eca45d" stroke-opacity="0.09"/>
+  </g>
+
+  <!-- DRIFT particles scattered on right half -->
+  <g fill="#d6efff">
+    <circle cx="316" cy="118" r="2.5" opacity="0.85"/>
+    <circle cx="382" cy="156" r="2"   opacity="0.7"/>
+    <circle cx="440" cy="108" r="2.5" opacity="0.85"/>
+    <circle cx="460" cy="200" r="2"   opacity="0.75"/>
+    <circle cx="298" cy="200" r="2"   opacity="0.7"/>
+    <circle cx="350" cy="260" r="2.5" opacity="0.8"/>
+    <circle cx="430" cy="280" r="2"   opacity="0.75"/>
+    <circle cx="408" cy="368" r="2.5" opacity="0.85"/>
+    <circle cx="470" cy="402" r="2"   opacity="0.7"/>
+    <circle cx="356" cy="412" r="2.5" opacity="0.8"/>
+    <circle cx="296" cy="382" r="2"   opacity="0.7"/>
+  </g>
+
+  <!-- Glows -->
+  <circle cx="180" cy="296" r="120" fill="url(#sunGlow)"/>
+  <circle cx="350" cy="232" r="120" fill="url(#orbGlow)"/>
+
+  <!-- HALO sun (left) -->
+  <circle cx="180" cy="296" r="72" fill="url(#sun)"/>
+
+  <!-- DRIFT orb (right, slightly higher + overlapping the horizon) -->
+  <circle cx="350" cy="232" r="78" fill="url(#orb)" opacity="0.95"/>
+
+  <!-- Horizon line -->
+  <rect x="0" y="295" width="512" height="1.5" fill="url(#horizon)"/>
+</svg>
