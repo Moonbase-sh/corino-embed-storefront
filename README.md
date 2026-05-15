@@ -44,7 +44,7 @@ At the bottom of the page:
 <script type="module" src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
-    Moonbase.setup('https://demo.moonbase.sh', {
+    Moonbase.setup('https://corino-demo.moonbase.sh', {
       toolbar: { enabled: false },
       theme: {
         dark: true,
@@ -58,7 +58,7 @@ At the bottom of the page:
 </script>
 ```
 
-- **Tenant**: `https://demo.moonbase.sh` — the public Moonbase demo tenant.
+- **Tenant**: `https://corino-demo.moonbase.sh` — the Corino dedicated demo tenant.
 - **Toolbar**: disabled (we drive everything from page UI instead).
 - **Theme**: dark, sharp corners, golden primary `#eca45d`, light buttons, custom heading/body fonts. The theme only restyles Moonbase-rendered surfaces (modals, forms, checkout); the page's own CSS is untouched.
 
@@ -71,12 +71,12 @@ Moonbase exposes deep links via the `?mb_intent=…` query parameter. Plain `<a 
 | Sign in | `?mb_intent=sign_in` |
 | View account | `?mb_intent=view_account` |
 | View cart | `?mb_intent=view_cart` |
-| Add product to cart | `?mb_intent=add_to_cart&mb_product_id=corino-halo` |
-| Add bundle to cart | `?mb_intent=add_to_cart&mb_bundle_id=corino-bundle` |
-| View product (trial) | `?mb_intent=view_product&mb_product_id=corino-drift` |
-| Download owned product | `?mb_intent=download_product&mb_product_id=corino-halo` |
+| Add product to cart | `?mb_intent=add_to_cart&mb_product_id=halo` |
+| Add bundle to cart | `?mb_intent=add_to_cart&mb_bundle_id=duo-bundle` |
+| View product (trial) | `?mb_intent=view_product&mb_product_id=drifter` |
+| Download owned product | `?mb_intent=download_product&mb_product_id=halo` |
 
-The demo tenant uses three IDs: `corino-halo`, `corino-drift`, and `corino-bundle`.
+The demo tenant uses three IDs: `halo`, `drifter`, and `duo-bundle`.
 
 ### 3. Declarative attributes
 
@@ -86,9 +86,9 @@ Moonbase observes two attributes on regular HTML elements:
 
 - `!user` / `user` — toggle the **Log in** vs **My account** links in the nav.
 - `cart.has_items` — show the cart-count badge only when there's something in it.
-- `product.corino-halo.owned` / `!product.corino-halo.owned` — swap the product card CTA between **Download** and **Add to cart**.
-- `product.corino-halo.has_discount` — show the strike-through original price and the discount badge.
-- `bundle.corino-bundle.has_discount` — show the bundle discount row.
+- `product.halo.owned` / `!product.halo.owned` — swap the product card CTA between **Download** and **Add to cart**.
+- `product.halo.has_discount` — show the strike-through original price and the discount badge.
+- `bundle.duo-bundle.has_discount` — show the bundle discount row.
 
 **`data-moonbase-render="…"`** — bind text content to live data:
 
