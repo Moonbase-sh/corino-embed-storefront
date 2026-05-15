@@ -73,10 +73,10 @@ Moonbase exposes deep links via the `?mb_intent=…` query parameter. Plain `<a 
 | View cart | `?mb_intent=view_cart` |
 | Add product to cart | `?mb_intent=add_to_cart&mb_product_id=halo` |
 | Add bundle to cart | `?mb_intent=add_to_cart&mb_bundle_id=duo-bundle` |
-| View product (trial) | `?mb_intent=view_product&mb_product_id=drifter` |
+| View product (trial) | `?mb_intent=view_product&mb_product_id=drift` |
 | Download owned product | `?mb_intent=download_product&mb_product_id=halo` |
 
-The demo tenant uses three IDs: `halo`, `drifter`, and `duo-bundle`.
+The demo tenant uses three IDs: `halo`, `drift`, and `duo-bundle`.
 
 ### 3. Declarative attributes
 
