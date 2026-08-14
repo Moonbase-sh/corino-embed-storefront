@@ -541,6 +541,35 @@
   .add-btn svg { transition: transform 0.2s; }
   .add-btn:hover svg { transform: translateX(2px); }
 
+  /* Stacked CTAs — download + extra license when owned */
+  .cta-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .license-btn {
+    background: transparent;
+    color: var(--fg-2);
+    border: 1px solid var(--line-2);
+    padding: 9px 16px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border-radius: var(--radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 180px;
+    transition: all 0.15s;
+  }
+  .license-btn:hover {
+    color: var(--fg);
+    border-color: var(--fg-3);
+    background: var(--bg-2);
+  }
+
   .trial-row {
     margin-top: 14px;
     display: flex;
@@ -822,7 +851,7 @@
     footer { padding: 48px 20px 24px; }
     .footer-bottom { flex-direction: column; gap: 8px; }
     .purchase { grid-template-columns: 1fr; gap: 16px; }
-    .add-btn { width: 100%; }
+    .add-btn, .license-btn { width: 100%; }
   }
 </style>
 </head>
@@ -952,18 +981,26 @@
       <div class="price-note">
         <span class="badge" data-moonbase-render="product.halo.discount_name" data-moonbase-if="product.halo.has_discount" hidden>INTRO · ENDS 06.30</span>
       </div>
-      <a class="add-btn halo" href="?mb_intent=add_to_cart&amp;mb_product_id=halo" data-moonbase-if="!product.halo.owned">
-        ADD TO CART
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/>
-        </svg>
-      </a>
-      <a class="add-btn halo" href="?mb_intent=download_product&amp;mb_product_id=halo" data-moonbase-if="product.halo.owned" hidden>
-        DOWNLOAD
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M7 2v8M4 7.5L7 10.5l3-3M2.5 12h9"/>
-        </svg>
-      </a>
+      <div class="cta-stack">
+        <a class="add-btn halo" href="?mb_intent=add_to_cart&amp;mb_product_id=halo" data-moonbase-if="!product.halo.owned">
+          ADD TO CART
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/>
+          </svg>
+        </a>
+        <a class="add-btn halo" href="?mb_intent=download_product&amp;mb_product_id=halo" data-moonbase-if="product.halo.owned" hidden>
+          DOWNLOAD
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M7 2v8M4 7.5L7 10.5l3-3M2.5 12h9"/>
+          </svg>
+        </a>
+        <a class="license-btn" href="?mb_intent=add_to_cart&amp;mb_product_id=halo" data-moonbase-if="product.halo.owned" hidden>
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M7 3v8M3 7h8"/>
+          </svg>
+          BUY ANOTHER LICENSE
+        </a>
+      </div>
     </div>
     <div class="trial-row">
       <a class="trial-btn" href="?mb_intent=view_product&amp;mb_product_id=halo">
@@ -1034,18 +1071,26 @@
       <div class="price-note">
         <span class="badge" data-moonbase-render="product.drift.discount_name" data-moonbase-if="product.drift.has_discount" hidden>INTRO · ENDS 06.30</span>
       </div>
-      <a class="add-btn drift" href="?mb_intent=add_to_cart&amp;mb_product_id=drift" data-moonbase-if="!product.drift.owned">
-        ADD TO CART
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/>
-        </svg>
-      </a>
-      <a class="add-btn drift" href="?mb_intent=download_product&amp;mb_product_id=drift" data-moonbase-if="product.drift.owned" hidden>
-        DOWNLOAD
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M7 2v8M4 7.5L7 10.5l3-3M2.5 12h9"/>
-        </svg>
-      </a>
+      <div class="cta-stack">
+        <a class="add-btn drift" href="?mb_intent=add_to_cart&amp;mb_product_id=drift" data-moonbase-if="!product.drift.owned">
+          ADD TO CART
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/>
+          </svg>
+        </a>
+        <a class="add-btn drift" href="?mb_intent=download_product&amp;mb_product_id=drift" data-moonbase-if="product.drift.owned" hidden>
+          DOWNLOAD
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M7 2v8M4 7.5L7 10.5l3-3M2.5 12h9"/>
+          </svg>
+        </a>
+        <a class="license-btn" href="?mb_intent=add_to_cart&amp;mb_product_id=drift" data-moonbase-if="product.drift.owned" hidden>
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M7 3v8M3 7h8"/>
+          </svg>
+          BUY ANOTHER LICENSE
+        </a>
+      </div>
     </div>
     <div class="trial-row">
       <a class="trial-btn" href="?mb_intent=view_product&amp;mb_product_id=drift">
