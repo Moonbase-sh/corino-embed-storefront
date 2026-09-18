@@ -44,7 +44,7 @@ At the bottom of the page:
 <script type="module" src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
-    Moonbase.setup('https://corino-demo.moonbase.sh', {
+    Moonbase.setup('https://store.cori.no', {
       toolbar: { enabled: false },
       theme: {
         dark: true,
@@ -58,7 +58,7 @@ At the bottom of the page:
 </script>
 ```
 
-- **Tenant**: `https://corino-demo.moonbase.sh` — the Corino dedicated demo tenant.
+- **Tenant**: `https://store.cori.no` — the Corino storefront tenant.
 - **Toolbar**: disabled (we drive everything from page UI instead).
 - **Theme**: dark, sharp corners, golden primary `#eca45d`, light buttons, custom heading/body fonts. The theme only restyles Moonbase-rendered surfaces (modals, forms, checkout); the page's own CSS is untouched.
 
