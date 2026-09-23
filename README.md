@@ -80,7 +80,7 @@ The demo tenant uses three IDs: `halo`, `drift`, and `duo-bundle`.
 
 ### 3. Declarative attributes
 
-Moonbase observes two attributes on regular HTML elements:
+Moonbase observes three attributes on regular HTML elements:
 
 **`data-moonbase-if="…"`** — conditional rendering. Examples used in the site:
 
@@ -96,6 +96,11 @@ Moonbase observes two attributes on regular HTML elements:
 - `cart.item_count` — populate the cart badge.
 - `product.<id>.price`, `product.<id>.original_price`, `product.<id>.discount_name` — live pricing on each product card.
 - `bundle.<id>.price`, `bundle.<id>.discount_total` — bundle pricing.
+
+**`data-moonbase-form="subscribe"`**: the newsletter form in the footer. Moonbase takes over the submit and posts the `email` field to the tenant in the background, so the page never reloads. With `data-moonbase-feedback="inline"` the drawer stays closed and the result lands on the form itself:
+
+- `data-moonbase-state` on the `<form>` goes `submitting` → `subscribed` / `confirmation_sent` (double opt-in) / `error`. The CSS keys off it to swap the button label to **Subscribing…** and to hide the input once the visitor is on the list.
+- The `[data-moonbase-message]` paragraph gets the outcome as text (or the server's error), and is made a live region for screen readers.
 
 The pattern is: write static, sensible-looking markup for the empty state, then let Moonbase hydrate the text and visibility once it knows about the user, cart, and catalog.
 
