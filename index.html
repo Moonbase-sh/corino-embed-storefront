@@ -781,8 +781,10 @@
     color: var(--fg-3);
     display: inline-flex; align-items: center; gap: 8px;
   }
-  .footer-newsletter { margin-top: 24px; }
-  .footer-newsletter-label {
+  /* Moonbase sets data-moonbase-state on the form (submitting, subscribed,
+     confirmation_sent, error) and writes the outcome into [data-moonbase-message]. */
+  .footer-newsletter { margin-top: 24px; max-width: 320px; }
+  .footer-newsletter h4 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
     color: var(--fg-4);
@@ -791,21 +793,58 @@
     margin: 0 0 10px;
     font-weight: 500;
   }
-  .footer-newsletter-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: transparent;
-    color: var(--fg-2);
-    border: 1px solid var(--line-2);
-    padding: 10px 14px;
+  .footer-newsletter .hint {
+    color: var(--fg-3);
     font-size: 12.5px;
-    font-weight: 500;
-    border-radius: var(--radius);
-    transition: all 0.15s;
+    line-height: 1.5;
+    margin: 0 0 12px;
   }
-  .footer-newsletter-btn:hover {
+  .footer-newsletter .fields {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .footer-newsletter input {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg);
+    border: 1px solid var(--line-2);
     color: var(--fg);
-    border-color: var(--fg-3);
-    background: var(--bg-2);
+    border-radius: var(--radius);
+    padding: 9px 11px;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  .footer-newsletter input:focus { outline: none; border-color: var(--fg-3); }
+  .footer-newsletter button {
+    background: var(--fg);
+    color: #0a0907;
+    border: none;
+    padding: 9px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: var(--radius);
+    white-space: nowrap;
+  }
+  .footer-newsletter button:disabled { opacity: 0.6; cursor: default; }
+  .footer-newsletter .busy,
+  .footer-newsletter[data-moonbase-state="submitting"] .idle { display: none; }
+  .footer-newsletter[data-moonbase-state="submitting"] .busy { display: inline; }
+  .footer-newsletter:is([data-moonbase-state="subscribed"], [data-moonbase-state="confirmation_sent"]) :is(.hint, .fields) {
+    display: none;
+  }
+  .footer-newsletter [data-moonbase-message] {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .footer-newsletter[data-moonbase-state="error"] [data-moonbase-message] {
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--halo-2);
+    margin-top: 8px;
   }
   .footer-col h4 {
     font-family: 'JetBrains Mono', monospace;
@@ -852,6 +891,11 @@
     .footer-bottom { flex-direction: column; gap: 8px; }
     .purchase { grid-template-columns: 1fr; gap: 16px; }
     .add-btn, .license-btn { width: 100%; }
+  }
+  @media (max-width: 600px) {
+    .footer-newsletter { max-width: none; }
+    .footer-newsletter .fields { flex-direction: column; gap: 10px; }
+    .footer-newsletter button { width: 100%; padding: 11px 14px; }
   }
 </style>
 </head>
@@ -1217,15 +1261,18 @@
         🇳🇴
         hello@corino.audio
       </div>
-      <div class="footer-newsletter">
-        <p class="footer-newsletter-label">Get release notes &amp; new presets</p>
-        <a class="footer-newsletter-btn" href="?mb_intent=subscribe">
-          Subscribe to the newsletter
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M3 6h6m0 0L6 3m3 3L6 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      </div>
+      <form class="footer-newsletter" data-moonbase-form="subscribe" data-moonbase-feedback="inline">
+        <h4>Newsletter</h4>
+        <p class="hint">New releases, presets, and the occasional studio note. No spam.</p>
+        <div class="fields">
+          <input name="email" type="email" required autocomplete="email" placeholder="you@studio.com" aria-label="Email address">
+          <button type="submit">
+            <span class="idle">Subscribe</span>
+            <span class="busy">Subscribing…</span>
+          </button>
+        </div>
+        <p data-moonbase-message></p>
+      </form>
     </div>
     <div class="footer-col">
       <h4>Plugins</h4>
