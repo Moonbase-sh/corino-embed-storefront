@@ -34,7 +34,7 @@ Then open <http://localhost:8000>.
 
 ## How Moonbase is integrated
 
-The integration has three moving parts: one initialization call, intent links for user actions, and `data-moonbase-*` attributes for conditional UI and live data binding. All three live inside `index.html`.
+The integration has four moving parts: one initialization call, intent links for user actions, `data-moonbase-*` attributes for conditional UI and live data binding, and a cookie banner that tells Moonbase what the visitor agreed to. All four live inside `index.html`.
 
 ### 1. Initialization
 
@@ -53,6 +53,7 @@ At the bottom of the page:
         buttons: 'light',
         fonts: { heading: 'Montserrat', body: 'Inter' },
       },
+      attribution: { consent },  // the visitor's cookie choice, see 4. below
     });
   });
 </script>
@@ -61,6 +62,7 @@ At the bottom of the page:
 - **Tenant**: `https://store.cori.no` — the Corino storefront tenant.
 - **Toolbar**: disabled (we drive everything from page UI instead).
 - **Theme**: dark, sharp corners, golden primary `#eca45d`, light buttons, custom heading/body fonts. The theme only restyles Moonbase-rendered surfaces (modals, forms, checkout); the page's own CSS is untouched.
+- **Attribution consent**: the answer from the cookie banner, or `undefined` before the visitor has given one.
 
 ### 2. Intent links
 
@@ -103,6 +105,28 @@ Moonbase observes three attributes on regular HTML elements:
 - The `[data-moonbase-message]` paragraph gets the outcome as text (or the server's error), and is made a live region for screen readers.
 
 The pattern is: write static, sensible-looking markup for the empty state, then let Moonbase hydrate the text and visibility once it knows about the user, cart, and catalog.
+
+### 4. Cookie consent
+
+Moonbase reads how a visitor arrived: UTM tags, the referring site, and ad click IDs (`gclid`, `fbclid`, `msclkid`, `ttclid`, …). The click IDs identify a visitor's click, so the storefront only keeps them, and remembers the arrival beyond the visit, with consent to marketing cookies. Sign-in and the cart are essential and work either way.
+
+The site has a small cookie banner (bottom left) as a stand-in for a real consent manager. Its only job, as far as Moonbase is concerned, is to report the answer:
+
+```js
+// On page load, pass a stored answer straight to setup (undefined if there is none)
+Moonbase.setup('https://store.cori.no', { attribution: { consent } });
+
+// When the visitor clicks Accept or Reject, report it right away
+Moonbase.configure({ attribution: { consent: true } });   // or false
+```
+
+- **`true`**: keeps the ad click IDs and records the arrival on a cart as the page loads, so a visitor who comes back later to buy is still put down to the campaign.
+- **`false`**: records only the UTM tags, referrer, and which ad platform the click came from, for this tab. Click IDs already stored are dropped.
+- **`undefined`** (no answer yet): the store's setting in Moonbase decides, under Account settings > Storefront > Features > "Ad and campaign tracking".
+
+The choice is saved in `localStorage` under `corino-cookie-consent`, so the banner only shows once. **Cookie settings** in the footer brings it back to change the answer. To see the banner again from scratch, run `localStorage.removeItem('corino-cookie-consent')` in the console and reload.
+
+With a real consent manager (Cookiebot, Usercentrics, OneTrust, …), call `Moonbase.configure` from its "consent changed" callback instead, and read its stored answer on load.
 
 ## Further reading
 
