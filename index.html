@@ -856,8 +856,9 @@
     font-weight: 500;
   }
   .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-  .footer-col a { color: var(--fg-2); font-size: 13.5px; transition: color 0.15s; }
-  .footer-col a:hover { color: var(--fg); }
+  .footer-col a, .footer-col .link-btn { color: var(--fg-2); font-size: 13.5px; transition: color 0.15s; }
+  .footer-col a:hover, .footer-col .link-btn:hover { color: var(--fg); }
+  .footer-col .link-btn { background: none; border: none; padding: 0; font-family: inherit; text-align: left; }
   .footer-bottom {
     padding-top: 32px;
     display: flex; justify-content: space-between;
@@ -872,6 +873,52 @@
     box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
   }
 
+  /* ───────────────── Cookie banner ───────────────── */
+  /* Sits above the sticky nav (30) and below Moonbase's drawers and checkout (9998+). */
+  .cookie-banner {
+    position: fixed;
+    left: 24px; bottom: 24px;
+    z-index: 40;
+    width: min(400px, calc(100vw - 48px));
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  .cookie-banner h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    font-weight: 500;
+  }
+  .cookie-banner p {
+    color: var(--fg-2);
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 0 0 16px;
+  }
+  /* Same size and weight for both answers: saying no should be as easy as saying yes. */
+  .cookie-actions { display: flex; gap: 8px; }
+  .cookie-actions button {
+    flex: 1;
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--line-2);
+    padding: 10px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: all 0.15s;
+  }
+  .cookie-actions button:hover { border-color: var(--fg-3); background: var(--bg-3); }
+  @media (max-width: 600px) {
+    .cookie-banner { left: 12px; right: 12px; bottom: 12px; width: auto; }
+  }
+
   /* Responsive */
   @media (max-width: 900px) {
     .nav-links { display: none; }
@@ -879,7 +926,7 @@
     .hero { padding: 60px 20px 0; }
     .hero-sub { grid-template-columns: 1fr; gap: 32px; padding-bottom: 60px; }
     .hero-spectrum { display: none; }
-    .plugin { grid-template-columns: 1fr; gap: 32px; padding: 24px 20px; }
+    .plugin, .plugin.reverse { grid-template-columns: 1fr; gap: 32px; padding: 24px 20px; }
     .plugin.reverse .plugin-art { order: 0; }
     .section-head { grid-template-columns: 1fr; padding: 24px 20px; gap: 8px; }
     .section-aside { text-align: left; }
@@ -1302,6 +1349,7 @@
         <li><a href="#">Careers</a></li>
         <li><a href="#">Press</a></li>
         <li><a href="#">Contact</a></li>
+        <li><button type="button" class="link-btn" data-cookie-settings>Cookie settings</button></li>
       </ul>
     </div>
   </div>
@@ -1311,6 +1359,18 @@
     <span>v2.1.04 · BUILD 2026.05</span>
   </div>
 </footer>
+
+<!-- ───────────────── Cookie banner ───────────────── -->
+<!-- Shown until the visitor answers; "Cookie settings" in the footer brings it back. -->
+<section class="cookie-banner" id="cookie-banner" aria-label="Cookie consent" hidden>
+  <h4>Cookies</h4>
+  <p>We use essential cookies to keep you signed in and remember your cart. With your
+    permission, we'd also like to use marketing cookies to understand how you found us.</p>
+  <div class="cookie-actions">
+    <button type="button" data-consent="denied">Reject</button>
+    <button type="button" data-consent="granted">Accept</button>
+  </div>
+</section>
 
 <script>
   // ── HALO harmonic bars (32 bars, sine-shaped) ──────────────────────────
@@ -1397,7 +1457,39 @@
 <!-- Moonbase embedded storefront — https://moonbase.sh/docs/storefronts/embedded/ -->
 <script type="module" src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
 <script type="text/javascript">
+  // ── Cookie consent ─────────────────────────────────────────────────────
+  // A stand-in for a real consent manager (Cookiebot, Usercentrics, …). All
+  // Moonbase needs from it is the visitor's answer on marketing cookies.
+  const CONSENT_KEY = 'corino-cookie-consent';
+
+  function storedConsent() {
+    try {
+      const value = localStorage.getItem(CONSENT_KEY);
+      if (value === 'granted') return true;
+      if (value === 'denied') return false;
+    } catch (e) {}
+    return undefined;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('cookie-banner');
+    const consent = storedConsent();
+    banner.hidden = consent !== undefined;
+
+    banner.addEventListener('click', (e) => {
+      const button = e.target.closest('[data-consent]');
+      if (!button) return;
+      try { localStorage.setItem(CONSENT_KEY, button.dataset.consent); } catch (e) {}
+      banner.hidden = true;
+      // Takes effect at once, and wins over the store's setting from here on.
+      Moonbase.configure({ attribution: { consent: button.dataset.consent === 'granted' } });
+    });
+
+    document.querySelector('[data-cookie-settings]').addEventListener('click', () => {
+      banner.hidden = false;
+      banner.querySelector('button').focus();
+    });
+
     Moonbase.setup('https://store.cori.no', {
       toolbar: { enabled: false },
       theme: {
@@ -1407,6 +1499,10 @@
         buttons: 'light',
         fonts: { heading: 'Montserrat', body: 'Inter' },
       },
+      // true keeps ad click IDs and the arrival beyond this visit; false keeps only
+      // the UTM tags and referrer, for this tab. Until the visitor answers it stays
+      // undefined, and the store's "Ad and campaign tracking" setting decides.
+      attribution: { consent },
     });
   });
 </script>
