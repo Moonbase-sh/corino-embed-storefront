@@ -77,12 +77,14 @@ Moonbase exposes deep links via the `?mb_intent=…` query parameter. Plain `<a 
 | Add bundle to cart | `?mb_intent=add_to_cart&mb_bundle_id=duo-bundle` |
 | View product (trial) | `?mb_intent=view_product&mb_product_id=drift` |
 | Download owned product | `?mb_intent=download_product&mb_product_id=halo` |
+| Read a product's reviews | `?mb_intent=view_reviews&mb_product_id=halo` |
+| Write a review | `?mb_intent=write_review&mb_product_id=halo` |
 
 The demo tenant uses three IDs: `halo`, `drift`, and `duo-bundle`.
 
 ### 3. Declarative attributes
 
-Moonbase observes three attributes on regular HTML elements:
+Moonbase observes four attributes on regular HTML elements:
 
 **`data-moonbase-if="…"`** — conditional rendering. Examples used in the site:
 
@@ -91,6 +93,9 @@ Moonbase observes three attributes on regular HTML elements:
 - `product.halo.owned` / `!product.halo.owned` — swap the product card CTA between **Download** and **Add to cart**.
 - `product.halo.has_discount` — show the strike-through original price and the discount badge.
 - `bundle.duo-bundle.has_discount` — show the bundle discount row.
+- `product.halo.has_reviews`: show the plugin's stars and review count once it has a published review.
+- `product.halo.can_review`: show **Write a review** to a signed-in customer who bought the plugin here.
+- `product.halo.reviewed` / `!product.halo.reviewed`: inside that link, say **Your review** once they have written one.
 
 **`data-moonbase-render="…"`** — bind text content to live data:
 
@@ -98,6 +103,17 @@ Moonbase observes three attributes on regular HTML elements:
 - `cart.item_count` — populate the cart badge.
 - `product.<id>.price`, `product.<id>.original_price`, `product.<id>.discount_name` — live pricing on each product card.
 - `bundle.<id>.price`, `bundle.<id>.discount_total` — bundle pricing.
+- `product.<id>.rating_average`, `product.<id>.rating_count_label`: the score under each plugin's name, as `4.6` and `23 reviews` (`1 review` for one).
+
+**`data-moonbase-embed="product.<id>.stars"`**: the plugin's stars, lit to its average. Moonbase draws them into the element, each as tall as its `font-size`, and the page colors them with two CSS variables:
+
+```css
+.rating-line .stars {
+  font-size: 14px;
+  --moonbase-stars-color: var(--halo);   /* the lit part */
+  --moonbase-stars-empty: var(--line-2); /* the rest */
+}
+```
 
 **`data-moonbase-form="subscribe"`**: the newsletter form in the footer. Moonbase takes over the submit and posts the `email` field to the tenant in the background, so the page never reloads. With `data-moonbase-feedback="inline"` the drawer stays closed and the result lands on the form itself:
 
@@ -105,6 +121,24 @@ Moonbase observes three attributes on regular HTML elements:
 - The `[data-moonbase-message]` paragraph gets the outcome as text (or the server's error), and is made a live region for screen readers.
 
 The pattern is: write static, sensible-looking markup for the empty state, then let Moonbase hydrate the text and visibility once it knows about the user, cart, and catalog.
+
+**Ratings** put all of that together under each plugin's name, with no script of their own:
+
+```html
+<div class="rating-line">
+  <a href="?mb_intent=view_reviews&mb_product_id=halo" data-moonbase-if="product.halo.has_reviews" hidden>
+    <span class="stars" data-moonbase-embed="product.halo.stars"></span>
+    <span data-moonbase-render="product.halo.rating_average"></span> ·
+    <span data-moonbase-render="product.halo.rating_count_label"></span>
+  </a>
+  <a href="?mb_intent=write_review&mb_product_id=halo" data-moonbase-if="product.halo.can_review" hidden>
+    <span data-moonbase-if="!product.halo.reviewed">Write a review</span>
+    <span data-moonbase-if="product.halo.reviewed" hidden>Your review</span>
+  </a>
+</div>
+```
+
+Reviews stay hidden until the store takes them (Account settings > Storefront > Features > "Product reviews" in Moonbase), and a plugin with no published reviews shows nothing: the line takes no space until one of its links shows.
 
 ### 4. Cookie consent
 

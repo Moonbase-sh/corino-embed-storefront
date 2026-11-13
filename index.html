@@ -427,6 +427,28 @@
     background: linear-gradient(110deg, oklch(0.82 0.12 230) 0%, oklch(0.6 0.16 280) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  /* A plugin's score under its name. The widget draws the stars, writes the numbers and shows the
+     line once there is a score; the page only sizes and colors them. */
+  .rating-line {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+    margin: 10px 0 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .rating-line:not(:has(> a:not([hidden]))) { display: none; }
+  .rating-line a { display: inline-flex; align-items: center; gap: 8px; transition: color 0.15s; }
+  .rating-line a:hover { color: var(--fg); }
+  .rating-line .dot { color: var(--fg-4); }
+  .rating-line .rating-write { color: var(--fg-2); border-bottom: 1px solid var(--line-2); padding-bottom: 1px; }
+  .rating-line .rating-write:hover { border-color: var(--fg-3); }
+  .rating-line .stars {
+    font-size: 14px;
+    --moonbase-stars-color: var(--halo);
+    --moonbase-stars-empty: var(--line-2);
+  }
   .plugin-tagline {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 22px;
@@ -1053,6 +1075,18 @@
         <span>VST3 · AU · AAX</span>
       </div>
       <h2 class="plugin-name"><span class="halo-gradient">HALO</span></h2>
+      <div class="rating-line">
+        <a href="?mb_intent=view_reviews&amp;mb_product_id=halo" data-moonbase-if="product.halo.has_reviews" hidden>
+          <span class="stars" data-moonbase-embed="product.halo.stars"></span>
+          <span data-moonbase-render="product.halo.rating_average"></span>
+          <span class="dot">·</span>
+          <span data-moonbase-render="product.halo.rating_count_label"></span>
+        </a>
+        <a class="rating-write" href="?mb_intent=write_review&amp;mb_product_id=halo" data-moonbase-if="product.halo.can_review" hidden>
+          <span data-moonbase-if="!product.halo.reviewed">Write a review</span>
+          <span data-moonbase-if="product.halo.reviewed" hidden>Your review</span>
+        </a>
+      </div>
       <p class="plugin-tagline">Tape, tubes &amp; transformer color in one warm box.</p>
       <p class="plugin-desc">A psychoacoustic saturator built from a year of tape machine measurements. Three stages — preamp, head bump, and bias — each modeled with a per-frequency response so the lows breathe and the highs stay glassy. Push it for ten dB of glow on the mix bus, or sit it on a vocal at 1% for the kind of warmth that just gets out of the way.</p>
 
@@ -1143,6 +1177,18 @@
         <span>VST3 · AU · AAX</span>
       </div>
       <h2 class="plugin-name"><span class="drift-gradient">DRIFT</span></h2>
+      <div class="rating-line">
+        <a href="?mb_intent=view_reviews&amp;mb_product_id=drift" data-moonbase-if="product.drift.has_reviews" hidden>
+          <span class="stars" data-moonbase-embed="product.drift.stars"></span>
+          <span data-moonbase-render="product.drift.rating_average"></span>
+          <span class="dot">·</span>
+          <span data-moonbase-render="product.drift.rating_count_label"></span>
+        </a>
+        <a class="rating-write" href="?mb_intent=write_review&amp;mb_product_id=drift" data-moonbase-if="product.drift.can_review" hidden>
+          <span data-moonbase-if="!product.drift.reviewed">Write a review</span>
+          <span data-moonbase-if="product.drift.reviewed" hidden>Your review</span>
+        </a>
+      </div>
       <p class="plugin-tagline">A reverb that thinks in particles, not rooms.</p>
       <p class="plugin-desc">DRIFT shreds incoming audio into a cloud of 1,024 grains, then suspends them in a tunable field of pitch, time and space. The result sits somewhere between reverb, delay and synthesis — perfect for ambient pads, dimensional vocals, or pulling a kick drum into a 14-second tail without losing its punch. Modulation runs internally so motion is built in, not bolted on.</p>
 
