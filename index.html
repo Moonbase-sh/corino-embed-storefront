@@ -427,6 +427,30 @@
     background: linear-gradient(110deg, oklch(0.82 0.12 230) 0%, oklch(0.6 0.16 280) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  /* A plugin's score under its name. The widget writes the numbers and shows the line once there
+     is a score; the ratings script at the end of the page fills the stars to the average. */
+  .rating-line {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+    margin: 10px 0 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--fg-3);
+  }
+  .rating-line:not(:has(> a:not([hidden]))) { display: none; }
+  .rating-line a { display: inline-flex; align-items: center; gap: 8px; transition: color 0.15s; }
+  .rating-line a:hover { color: var(--fg); }
+  .rating-line .dot { color: var(--fg-4); }
+  .rating-line .rating-write { color: var(--fg-2); border-bottom: 1px solid var(--line-2); padding-bottom: 1px; }
+  .rating-line .rating-write:hover { border-color: var(--fg-3); }
+  /* Five stars from one star shape, lit from the left up to --rating out of 5 */
+  .stars {
+    --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1.7 0 27.4 24'%3E%3Cpath d='M12 2.6l2.9 6.2 6.7.7-5 4.6 1.4 6.6L12 17.3l-5.9 3.4 1.4-6.6-5-4.6 6.7-.7z'/%3E%3C/svg%3E");
+    width: 80px; height: 14px; flex-shrink: 0;
+    background: linear-gradient(90deg, var(--halo) calc(var(--rating, 0) / 5 * 100%), var(--line-2) 0);
+    -webkit-mask: var(--star) left center / 16px 14px repeat-x;
+    mask: var(--star) left center / 16px 14px repeat-x;
+  }
   .plugin-tagline {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 22px;
@@ -1053,6 +1077,15 @@
         <span>VST3 · AU · AAX</span>
       </div>
       <h2 class="plugin-name"><span class="halo-gradient">HALO</span></h2>
+      <div class="rating-line">
+        <a href="?mb_intent=view_reviews&amp;mb_product_id=halo" data-moonbase-if="product.halo.has_reviews" hidden>
+          <span class="stars" data-stars="halo" aria-hidden="true"></span>
+          <span data-moonbase-render="product.halo.rating_average"></span>
+          <span class="dot">·</span>
+          <span><span data-moonbase-render="product.halo.rating_count"></span> <span data-reviews-noun="halo">REVIEWS</span></span>
+        </a>
+        <a class="rating-write" href="?mb_intent=write_review&amp;mb_product_id=halo" data-moonbase-if="product.halo.can_review" data-write-review="halo" hidden>WRITE A REVIEW</a>
+      </div>
       <p class="plugin-tagline">Tape, tubes &amp; transformer color in one warm box.</p>
       <p class="plugin-desc">A psychoacoustic saturator built from a year of tape machine measurements. Three stages — preamp, head bump, and bias — each modeled with a per-frequency response so the lows breathe and the highs stay glassy. Push it for ten dB of glow on the mix bus, or sit it on a vocal at 1% for the kind of warmth that just gets out of the way.</p>
 
@@ -1143,6 +1176,15 @@
         <span>VST3 · AU · AAX</span>
       </div>
       <h2 class="plugin-name"><span class="drift-gradient">DRIFT</span></h2>
+      <div class="rating-line">
+        <a href="?mb_intent=view_reviews&amp;mb_product_id=drift" data-moonbase-if="product.drift.has_reviews" hidden>
+          <span class="stars" data-stars="drift" aria-hidden="true"></span>
+          <span data-moonbase-render="product.drift.rating_average"></span>
+          <span class="dot">·</span>
+          <span><span data-moonbase-render="product.drift.rating_count"></span> <span data-reviews-noun="drift">REVIEWS</span></span>
+        </a>
+        <a class="rating-write" href="?mb_intent=write_review&amp;mb_product_id=drift" data-moonbase-if="product.drift.can_review" data-write-review="drift" hidden>WRITE A REVIEW</a>
+      </div>
       <p class="plugin-tagline">A reverb that thinks in particles, not rooms.</p>
       <p class="plugin-desc">DRIFT shreds incoming audio into a cloud of 1,024 grains, then suspends them in a tunable field of pitch, time and space. The result sits somewhere between reverb, delay and synthesis — perfect for ambient pads, dimensional vocals, or pulling a kick drum into a 14-second tail without losing its punch. Modulation runs internally so motion is built in, not bolted on.</p>
 
@@ -1457,6 +1499,26 @@
 <!-- Moonbase embedded storefront — https://moonbase.sh/docs/storefronts/embedded/ -->
 <script type="module" src="https://assets.moonbase.sh/storefront/moonbase.js"></script>
 <script type="text/javascript">
+  // ── Ratings ────────────────────────────────────────────────────────────
+  // The widget writes each plugin's average and review count into the page, and shows the line
+  // once there is a score (data-moonbase-render and data-moonbase-if above). This does what text
+  // can't, from the catalog the widget hands over each time it loads one: fill the stars to the
+  // average, say "review" for one, and "Your review" to someone who has already written theirs.
+  window.addEventListener('moonbase-storefront-storefront-updated', (e) => {
+    for (const product of e.detail.storefront.products) {
+      const rating = product.rating;
+      document.querySelectorAll(`[data-stars="${product.id}"]`).forEach((el) => {
+        el.style.setProperty('--rating', rating?.average ?? 0);
+      });
+      document.querySelectorAll(`[data-reviews-noun="${product.id}"]`).forEach((el) => {
+        el.textContent = rating?.count === 1 ? 'REVIEW' : 'REVIEWS';
+      });
+      document.querySelectorAll(`[data-write-review="${product.id}"]`).forEach((el) => {
+        el.textContent = product.reviewed ? 'YOUR REVIEW' : 'WRITE A REVIEW';
+      });
+    }
+  });
+
   // ── Cookie consent ─────────────────────────────────────────────────────
   // A stand-in for a real consent manager (Cookiebot, Usercentrics, …). All
   // Moonbase needs from it is the visitor's answer on marketing cookies.
